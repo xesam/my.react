@@ -1,0 +1,21 @@
+<html>
+
+<head></head>
+
+<body>
+    <div id="app_1"></div>
+    <script src="../node_modules/react/dist/react.js"></script>
+    <script src="../node_modules/react-dom/dist/react-dom.js"></script>
+    <script src="./excel.1.js"></script>
+    <script>
+        ReactDOM.render(
+            React.createElement(Excel, {
+                headers: headers,
+                initialData: data
+            }),
+            document.getElementById('app_1')
+        );
+    </script>
+</body>
+
+</html>
