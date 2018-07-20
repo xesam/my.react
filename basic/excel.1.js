@@ -32,7 +32,26 @@ var Excel = React.createClass({
         this.setState({
             data: data,
             sortby: column,
-            descending: descending
+            descending: descending,
+            edit: null
+        });
+    },
+    _showEditor: function(e) {
+        this.setState({
+            edit: {
+                row: parseInt(e.target.dataset.row, 10),
+                cell: e.target.cellIndex
+            }
+        });
+    },
+    _save: function(e) {
+        e.preventDefault();
+        var input = e.target.firstChild;
+        var data = this.state.data.slice();
+        data[this.state.edit.row][this.state.edit.cell] = input.value;
+        this.setState({
+            edit: null,
+            data: data
         });
     },
     render: function() {
@@ -52,8 +71,24 @@ var Excel = React.createClass({
             ),
             React.DOM.tbody(
                 null,
-                this.state.data.map(row => {
-                    return React.DOM.tr(null, row.map(cell => React.DOM.td(null, cell)));
+                this.state.data.map((row, rowIndex) => {
+                    return React.DOM.tr(
+                        { key: rowIndex },
+                        row.map((cell, colIndex) => {
+                            var edit = this.state.edit;
+                            var content = cell;
+                            if (edit && edit.row == rowIndex && edit.cell === colIndex) {
+                                content = React.DOM.form(
+                                    { onSubmit: this._save },
+                                    React.DOM.input({
+                                        type: "text",
+                                        defaultValue: content
+                                    })
+                                );
+                            }
+                            return React.DOM.td({ key: colIndex, "data-row": rowIndex, onDoubleClick: this._showEditor }, content);
+                        })
+                    );
                 })
             )
         );
