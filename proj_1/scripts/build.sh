@@ -1,3 +1,4 @@
 npm run babel
-npm run browserify
+npm run app
+npm run discover
 cat css/*/* css/*.css | sed 's/..\/..\/images/images/g' > bundle.css

@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "babel": "babel --presets react,es2015 js/source -d js/build",
-        "browserify": "browserify js/build/app.js -o bundle.js",
+        "app": "browserify js/build/app.js -o bundle.js",
+        "discover": "browserify js/build/discover.js -o discover.bundle.js",
         "watch": "\"sh scripts/build.sh\" js/source css"
     },
     "author": "",
