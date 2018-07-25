@@ -1,0 +1,9 @@
+.Excel {
+    border: 1px solid #e4e4e4;
+    margin: 20px;
+}
+
+.Excel th, .Excel td {
+    border: 1px solid #e4e4e4;
+    margin: 20px;
+}
