@@ -3,126 +3,126 @@
 <head></head>
 
 <body>
-    <div id="app_1"></div>
-    <div id="app_2"></div>
-    <div id="app_3"></div>
-    <script src="../node_modules/react/dist/react.js"></script>
-    <script src="../node_modules/react-dom/dist/react-dom.js"></script>
-    <script>
-        ReactDOM.render(
-            React.DOM.h1({
-                id: "h1-id",
-                style: {
-                    color: 'red'
-                }
-            }, 'Hello World'),
-            document.getElementById('app_1')
-        );
-        let Name = React.createClass({
-            propTypes: {
-                name: React.PropTypes.string.isRequired,
-                age: React.PropTypes.number
-            },
-            getDefaultProps() {
-                return {
-                    age: 18
-                }
-            },
-            render() {
-                return React.DOM.h2(null, `my name is:${this.props.name}, age ${this.props.age}`);
+<div id="app_1"></div>
+<div id="app_2"></div>
+<div id="app_3"></div>
+<script src="./node_modules/react/dist/react.js"></script>
+<script src="./node_modules/react-dom/dist/react-dom.js"></script>
+<script>
+    ReactDOM.render(
+        React.DOM.h1({
+            id: "h1-id",
+            style: {
+                color: 'red'
             }
-        });
-        ReactDOM.render(
-            React.createElement(Name, {
-                name: 'xesam'
-            }),
-            document.getElementById('app_2')
-        );
+        }, 'Hello React'),
+        document.getElementById('app_1')
+    );
+    let Name = React.createClass({
+        propTypes: {
+            name: React.PropTypes.string.isRequired,
+            age: React.PropTypes.number
+        },
+        getDefaultProps() {
+            return {
+                age: 18
+            }
+        },
+        render() {
+            return React.DOM.h2(null, `my name is:${this.props.name}, age ${this.props.age}`);
+        }
+    });
+    ReactDOM.render(
+        React.createElement(Name, {
+            name: 'xesam'
+        }),
+        document.getElementById('app_2')
+    );
 
-        let logMixin = {
-            _log: function (methodName, args) {
-                console.log(methodName, args);
-            },
-            componentWillUpdate: function () {
-                this._log('componentWillUpdate', arguments);
-            },
-            componentDidUpdate: function () {
-                this._log('componentDidUpdate', arguments);
-            },
-            componentWillMount: function () {
-                this._log('componentWillMount', arguments);
-            },
-            componentDidMount: function () {
-                this._log('componentDidMount', arguments);
-            },
-            componentWillUnmount: function () {
-                this._log('componentWillUnmount', arguments);
-            }
-        };
+    let logMixin = {
+        _log: function (methodName, args) {
+            console.log(methodName, args);
+        },
+        componentWillUpdate: function () {
+            this._log('componentWillUpdate', arguments);
+        },
+        componentDidUpdate: function () {
+            this._log('componentDidUpdate', arguments);
+        },
+        componentWillMount: function () {
+            this._log('componentWillMount', arguments);
+        },
+        componentDidMount: function () {
+            this._log('componentDidMount', arguments);
+        },
+        componentWillUnmount: function () {
+            this._log('componentWillUnmount', arguments);
+        }
+    };
 
-        var Counter = React.createClass({
-            name: 'Counter',
-            // mixins: [logMixin],
-            propTypes: {
-                count: React.PropTypes.number.isRequired,
-            },
-            shouldComponentUpdate(nextProps, nextState_ignore) {
-                return nextProps.count !== this.props.count;
-            },
-            render: function () {
-                console.log(this.name + '::render()');
-                return React.DOM.span(null, this.props.count);
-            }
-        });
+    var Counter = React.createClass({
+        name: 'Counter',
+        // mixins: [logMixin],
+        propTypes: {
+            count: React.PropTypes.number.isRequired,
+        },
+        shouldComponentUpdate(nextProps, nextState_ignore) {
+            return nextProps.count !== this.props.count;
+        },
+        render: function () {
+            console.log(this.name + '::render()');
+            return React.DOM.span(null, this.props.count);
+        }
+    });
 
-        var TextAreaCounter = React.createClass({
-            name: 'TextAreaCounter',
-            // mixins: [logMixin],
-            propTypes: {
-                defaultValue: React.PropTypes.string,
-            },
-            getDefaultProps: function () {
-                return {
-                    defaultValue: '',
-                };
-            },
-            getInitialState: function () {
-                return {
-                    text: this.props.defaultValue,
-                };
-            },
-            _textChange: function (ev) {
-                this.setState({
-                    text: ev.target.value,
-                });
-            },
-            render: function () {
-                console.log(this.name + '::render()');
-                var counter = null;
-                if (this.state.text.length > 0) {
-                    counter = React.DOM.h3(
-                        null,
-                        React.createElement(Counter, {
-                            count: this.state.text.length
-                        })
-                    )
-                }
-                return React.DOM.div(null,
-                    React.DOM.textarea({
-                        value: this.state.text,
-                        onChange: this._textChange
-                    }),
-                    counter
-                );
+    var TextAreaCounter = React.createClass({
+        name: 'TextAreaCounter',
+        // mixins: [logMixin],
+        propTypes: {
+            defaultValue: React.PropTypes.string,
+        },
+        getDefaultProps: function () {
+            return {
+                defaultValue: '',
+            };
+        },
+        getInitialState: function () {
+            return {
+                text: this.props.defaultValue,
+            };
+        },
+        _textChange: function (ev) {
+            this.setState({
+                text: ev.target.value,
+            });
+        },
+        render: function () {
+            console.log(this.name + '::render()');
+            var counter = null;
+            if (this.state.text.length > 0) {
+                counter = React.DOM.h3(
+                    null,
+                    React.createElement(Counter, {
+                        count: this.state.text.length
+                    })
+                )
             }
-        });
-        ReactDOM.render(
-            React.createElement(TextAreaCounter, {
-                defaultValue: "Bob",
-            }),
-            document.getElementById("app_3")
-        );
-    </script>
+            return React.DOM.div(null,
+                React.DOM.textarea({
+                    value: this.state.text,
+                    onChange: this._textChange
+                }),
+                counter
+            );
+        }
+    });
+    ReactDOM.render(
+        React.createElement(TextAreaCounter, {
+            defaultValue: "123",
+        }),
+        document.getElementById("app_3")
+    );
+</script>
 </body>
 
 </html>

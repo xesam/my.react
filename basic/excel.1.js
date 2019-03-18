@@ -1,5 +1,5 @@
-var headers = ["Book", "Author", "Language", "Published", "Sales"];
-var data = [
+let headers = ["Book", "Author", "Language", "Published", "Sales"];
+let data = [
     ["The Lord of the Rings", "J. R. R. Tolkien", "English", "1954–1955", "150 million"],
     ["Le Petit Prince (The Little Prince)", "Antoine de Saint-Exupéry", "French", "1943", "140 million"],
     ["Harry Potter and the Philosopher's Stone", "J. K. Rowling", "English", "1997", "107 million"],
@@ -9,14 +9,14 @@ var data = [
     ["She: A History of Adventure", "H. Rider Haggard", "English", "1887", "100 million"]
 ];
 
-var Excel = React.createClass({
+let Excel = React.createClass({
     displayName: "Excel",
     _preSearchData: null,
     propTypes: {
         headers: React.PropTypes.arrayOf(React.PropTypes.string),
         initialData: React.PropTypes.arrayOf(React.PropTypes.arrayOf(React.PropTypes.string))
     },
-    getInitialState: function() {
+    getInitialState: function () {
         return {
             data: this.props.initialData,
             sortby: null,
@@ -26,25 +26,25 @@ var Excel = React.createClass({
         };
     },
     _log: [],
-    _logSetState: function(newState) {
+    _logSetState: function (newState) {
         this._log.push(JSON.parse(JSON.stringify(this._log.length === 0 ? this.state : newState)));
         this.setState(newState);
     },
-    componentDidMount: function() {
-        document.onkeydown = function(e) {
+    componentDidMount: function () {
+        document.onkeydown = function (e) {
             if (e.altKey && e.shiftKey) {
                 this._replay();
             }
         }.bind(this);
     },
-    _replay: function() {
+    _replay: function () {
         if (this._log.length === 0) {
             console.warn("No state to replay yet");
             return;
         }
-        var idx = -1;
-        var interval = setInterval(
-            function() {
+        let idx = -1;
+        let interval = setInterval(
+            function () {
                 console.log(`idx=${idx}`);
                 idx++;
                 if (idx === this._log.length - 1) {
@@ -56,11 +56,11 @@ var Excel = React.createClass({
             1000
         );
     },
-    _sort: function(e) {
-        var column = e.target.cellIndex;
-        var data = this.state.data.slice();
-        var descending = this.state.sortby === column && !this.state.descending;
-        data.sort(function(a, b) {
+    _sort: function (e) {
+        let column = e.target.cellIndex;
+        let data = this.state.data.slice();
+        let descending = this.state.sortby === column && !this.state.descending;
+        data.sort(function (a, b) {
             return descending ? (a[column] < b[column] ? 1 : -1) : a[column] > b[column] ? 1 : -1;
         });
         this._logSetState({
@@ -70,7 +70,7 @@ var Excel = React.createClass({
             edit: null
         });
     },
-    _showEditor: function(e) {
+    _showEditor: function (e) {
         this._logSetState({
             edit: {
                 row: parseInt(e.target.dataset.row, 10),
@@ -78,17 +78,17 @@ var Excel = React.createClass({
             }
         });
     },
-    _save: function(e) {
+    _save: function (e) {
         e.preventDefault();
-        var input = e.target.firstChild;
-        var data = this.state.data.slice();
+        let input = e.target.firstChild;
+        let data = this.state.data.slice();
         data[this.state.edit.row][this.state.edit.cell] = input.value;
         this._logSetState({
             edit: null,
             data: data
         });
     },
-    _toggleSearch: function() {
+    _toggleSearch: function () {
         if (this.state.search) {
             this._logSetState({
                 data: this._preSearchData,
@@ -102,14 +102,14 @@ var Excel = React.createClass({
             });
         }
     },
-    _search: function(e) {
-        var needle = e.target.value.toLowerCase();
+    _search: function (e) {
+        let needle = e.target.value.toLowerCase();
         if (!needle) {
-            this._logSetState({ data: this._preSearchData });
+            this._logSetState({data: this._preSearchData});
             return;
         }
-        var idx = e.target.dataset.idx; // 需要搜索的那一列的索引值
-        var searchdata = this._preSearchData.filter(function(row) {
+        let idx = e.target.dataset.idx; // 需要搜索的那一列的索引值
+        let searchdata = this._preSearchData.filter(function (row) {
             return (
                 row[idx]
                     .toString()
@@ -117,29 +117,29 @@ var Excel = React.createClass({
                     .indexOf(needle) > -1
             );
         });
-        this._logSetState({ data: searchdata });
+        this._logSetState({data: searchdata});
     },
-    _download: function(format, ev) {
-        var contents =
+    _download: function (format, ev) {
+        let contents =
             format === "json"
                 ? JSON.stringify(this.state.data)
-                : this.state.data.reduce(function(result, row) {
-                      return (
-                          result +
-                          row.reduce(function(rowresult, cell, idx) {
-                              return rowresult + '"' + cell.replace(/"/g, '""') + '"' + (idx < row.length - 1 ? "," : "");
-                          }, "") +
-                          "\n"
-                      );
-                  }, "");
-        var URL = window.URL || window.webkitURL;
-        var blob = new Blob([contents], { type: "text/" + format });
+                : this.state.data.reduce(function (result, row) {
+                    return (
+                        result +
+                        row.reduce(function (rowresult, cell, idx) {
+                            return rowresult + '"' + cell.replace(/"/g, '""') + '"' + (idx < row.length - 1 ? "," : "");
+                        }, "") +
+                        "\n"
+                    );
+                }, "");
+        let URL = window.URL || window.webkitURL;
+        let blob = new Blob([contents], {type: "text/" + format});
         ev.target.href = URL.createObjectURL(blob);
         ev.target.download = "data." + format;
     },
-    _renderToolbar: function() {
+    _renderToolbar: function () {
         return React.DOM.div(
-            { className: "toolbar" },
+            {className: "toolbar"},
             React.DOM.button(
                 {
                     onClick: this._toggleSearch
@@ -162,15 +162,15 @@ var Excel = React.createClass({
             )
         );
     },
-    _renderSearch: function() {
+    _renderSearch: function () {
         if (!this.state.search) {
             return null;
         }
         return React.DOM.tr(
-            { onChange: this._search },
-            this.props.headers.map(function(_ignore, idx) {
+            {onChange: this._search},
+            this.props.headers.map(function (_ignore, idx) {
                 return React.DOM.td(
-                    { key: idx },
+                    {key: idx},
                     React.DOM.input({
                         type: "text",
                         "data-idx": idx
@@ -179,18 +179,18 @@ var Excel = React.createClass({
             })
         );
     },
-    _renderTable: function() {
+    _renderTable: function () {
         return React.DOM.table(
             null,
             React.DOM.thead(
-                { onClick: this._sort },
+                {onClick: this._sort},
                 React.DOM.tr(
                     null,
                     this.props.headers.map((title, index) => {
                         if (this.state.sortby === index) {
                             title += this.state.descending ? " \u2191" : " \u2193";
                         }
-                        return React.DOM.th({ key: index }, title);
+                        return React.DOM.th({key: index}, title);
                     })
                 )
             ),
@@ -199,27 +199,31 @@ var Excel = React.createClass({
                 this._renderSearch(),
                 this.state.data.map((row, rowIndex) => {
                     return React.DOM.tr(
-                        { key: rowIndex },
+                        {key: rowIndex},
                         row.map((cell, colIndex) => {
-                            var edit = this.state.edit;
-                            var content = cell;
+                            let edit = this.state.edit;
+                            let content = cell;
                             if (edit && edit.row == rowIndex && edit.cell === colIndex) {
                                 content = React.DOM.form(
-                                    { onSubmit: this._save },
+                                    {onSubmit: this._save},
                                     React.DOM.input({
                                         type: "text",
                                         defaultValue: content
                                     })
                                 );
                             }
-                            return React.DOM.td({ key: colIndex, "data-row": rowIndex, onDoubleClick: this._showEditor }, content);
+                            return React.DOM.td({
+                                key: colIndex,
+                                "data-row": rowIndex,
+                                onDoubleClick: this._showEditor
+                            }, content);
                         })
                     );
                 })
             )
         );
     },
-    render: function() {
+    render: function () {
         return React.DOM.div(null, this._renderToolbar(), this._renderTable());
     }
 });
