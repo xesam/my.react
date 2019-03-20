@@ -1,0 +1,51 @@
+<html>
+
+<head></head>
+
+<body>
+<div id="app_1"></div>
+<div id="app_2"></div>
+<div id="app_3"></div>
+<div id="app_4"></div>
+<script src="./node_modules/react/dist/react.js"></script>
+<script src="./node_modules/react-dom/dist/react-dom.js"></script>
+<script>
+    ReactDOM.render(
+        React.DOM.h1({
+            id: "h1-id",
+            style: {
+                color: 'red'
+            }
+        }, 'Hello React'),
+        document.getElementById('app_1')
+    );
+    let Name = React.createClass({
+        propTypes: {
+            name: React.PropTypes.string.isRequired,
+            age: React.PropTypes.number
+        },
+        getDefaultProps() {
+            return {
+                age: 18
+            }
+        },
+        render() {
+            return React.DOM.h2(null, `my name is:${this.props.name}, age ${this.props.age}`);
+        }
+    });
+    ReactDOM.render(
+        React.createElement(Name, {
+            name: 'xesam'
+        }),
+        document.getElementById('app_2')
+    );
+    ReactDOM.render(
+        React.createFactory(Name)({
+            name: 'xesam'
+        }),
+        document.getElementById('app_3')
+    );
+</script>
+</body>
+
+</html>

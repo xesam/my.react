@@ -6,68 +6,43 @@
 <div id="app_1"></div>
 <div id="app_2"></div>
 <div id="app_3"></div>
+<div id="app_4"></div>
 <script src="./node_modules/react/dist/react.js"></script>
 <script src="./node_modules/react-dom/dist/react-dom.js"></script>
 <script>
-    ReactDOM.render(
-        React.DOM.h1({
-            id: "h1-id",
-            style: {
-                color: 'red'
-            }
-        }, 'Hello React'),
-        document.getElementById('app_1')
-    );
-    let Name = React.createClass({
-        propTypes: {
-            name: React.PropTypes.string.isRequired,
-            age: React.PropTypes.number
-        },
-        getDefaultProps() {
-            return {
-                age: 18
-            }
-        },
-        render() {
-            return React.DOM.h2(null, `my name is:${this.props.name}, age ${this.props.age}`);
-        }
-    });
-    ReactDOM.render(
-        React.createElement(Name, {
-            name: 'xesam'
-        }),
-        document.getElementById('app_2')
-    );
-
-    let logMixin = {
+    let log = {
         _log: function (methodName, args) {
-            console.log(methodName, args);
+            console.log(`[${this.name}]${methodName}`, args);
         },
         componentWillUpdate: function () {
-            this._log('componentWillUpdate', arguments);
+            this._log(`componentWillUpdate`, arguments);
         },
         componentDidUpdate: function () {
-            this._log('componentDidUpdate', arguments);
+            this._log(`componentDidUpdate`, arguments);
         },
         componentWillMount: function () {
-            this._log('componentWillMount', arguments);
+            this._log(`componentWillMount`, arguments);
         },
         componentDidMount: function () {
-            this._log('componentDidMount', arguments);
+            this._log(`componentDidMount`, arguments);
         },
         componentWillUnmount: function () {
-            this._log('componentWillUnmount', arguments);
+            this._log(`componentWillUnmount`, arguments);
+        },
+        componentWillReceiveProps: function () {
+            this._log(`componentWillReceiveProps`, arguments);
+        },
+        shouldComponentUpdate(nextProps, nextState) {
+            this._log(`shouldComponentUpdate`, arguments);
+            return nextProps.count !== this.props.count;
         }
     };
 
-    var Counter = React.createClass({
+    let Counter = React.createClass({
         name: 'Counter',
-        // mixins: [logMixin],
+        mixins: [log],
         propTypes: {
             count: React.PropTypes.number.isRequired,
-        },
-        shouldComponentUpdate(nextProps, nextState_ignore) {
-            return nextProps.count !== this.props.count;
         },
         render: function () {
             console.log(this.name + '::render()');
@@ -75,9 +50,8 @@
         }
     });
 
-    var TextAreaCounter = React.createClass({
+    let TextAreaCounter = React.createClass({
         name: 'TextAreaCounter',
-        // mixins: [logMixin],
         propTypes: {
             defaultValue: React.PropTypes.string,
         },
@@ -98,14 +72,14 @@
         },
         render: function () {
             console.log(this.name + '::render()');
-            var counter = null;
+            let counter = null;
             if (this.state.text.length > 0) {
                 counter = React.DOM.h3(
                     null,
                     React.createElement(Counter, {
                         count: this.state.text.length
                     })
-                )
+                );
             }
             return React.DOM.div(null,
                 React.DOM.textarea({
@@ -116,12 +90,13 @@
             );
         }
     });
-    ReactDOM.render(
+    let text1 = ReactDOM.render(
         React.createElement(TextAreaCounter, {
             defaultValue: "123",
         }),
-        document.getElementById("app_3")
+        document.getElementById("app_4")
     );
+    // text1.setState({text:'123456789'});
 </script>
 </body>
 
