@@ -21,14 +21,6 @@
             console.log(`componentDidMount`, arguments);
         }
 
-        componentWillUpdate() {
-            console.log(`componentWillUpdate`, arguments);
-        }
-
-        componentDidUpdate() {
-            console.log(`componentDidUpdate`, arguments);
-        }
-
         componentWillReceiveProps() {
             console.log(`componentWillReceiveProps`, arguments);
         }
@@ -38,12 +30,21 @@
             return nextProps.count !== this.props.count;
         }
 
-        componentWillUnmount() {
-            console.log(`componentWillUnmount`, arguments);
+        componentWillUpdate() {
+            console.log(`componentWillUpdate`, arguments);
         }
 
         render() {
+            console.log(`render`, arguments);
             return <h1>Hello</h1>
+        }
+
+        componentDidUpdate() {
+            console.log(`componentDidUpdate`, arguments);
+        }
+
+        componentWillUnmount() {
+            console.log(`componentWillUnmount`, arguments);
         }
     }
 
